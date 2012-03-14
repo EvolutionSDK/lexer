@@ -289,14 +289,17 @@ class Lexer {
 						$sample = substr($this->source, ++$pointer, strlen($match));
 						if($sample == $match) {
 
-							$tokens[] = (object) array('name' => $token, 'value' => $queue,
-								'line' => $tokenLine, 'col' => $tokenCol);
-							
-							$queue = substr($this->source, $oldPointer, $pointer - $oldPointer);
+							/**
+							 * Add the content before the match
+							 * @author Nate Ferrero
+							 */
+							$queue .= substr($this->source, $oldPointer, $pointer - $oldPointer);
+
 							$xmatch = true;
 							$ntoken = $qtoken;
 							$xqueue = substr($this->source, $pointer + 1, strlen($match) - 1);
 							$pointer += strlen($match);
+
 							break 2;
 						}
 					}
