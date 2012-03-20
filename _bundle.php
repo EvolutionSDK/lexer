@@ -167,7 +167,7 @@ class Lexer {
 								break 2;
 							}
 							$seq = $condtoken['match-sequence'];
-							$index = count($tokens);
+							$index = count($tokens) - 1;
 							
 							
 							/* DEBUG * /
