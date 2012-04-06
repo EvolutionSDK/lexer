@@ -4,6 +4,7 @@ namespace bundles\lexer;
 use Exception;
 use InvalidArgumentException;
 use LogicException;
+use e;
 
 /**
  * Text processing lexer class
@@ -24,6 +25,8 @@ class Lexer {
 	private $source;
 	
 	private $file;
+
+	private $description = '{unknown}';
 	
 	/**
 	 * Define grammar
@@ -43,6 +46,15 @@ class Lexer {
 		$this->initialToken = $initialToken;
 		
 		// Allow chaining
+		return $this;
+	}
+
+	/**
+	 * Set description
+	 * @author Nate Ferrero
+	 */
+	public function description($description) {
+		$this->description = $description;
 		return $this;
 	}
 	
@@ -142,7 +154,7 @@ class Lexer {
 			// Check that the current token is defined
 			if(!isset($this->grammar[$token]))
 				throw new LexerSyntaxException("Grammar Error: Undefined token 
-					`<i>$token</i>` on line `$tokenLine` at column `$tokenCol` in `$this->file`");
+					`<i>$token</i>` on line `$tokenLine` at column `$tokenCol` in `$this->description`");
 			
 			// Use the token
 			$xtoken = $this->grammar[$token];
@@ -246,11 +258,11 @@ class Lexer {
 						
 						// If no conditional match found, throw exception
 						throw new Exception("Tokenize Error: The tokenizer has encountered a conditional token `<i>$token</i>` ".
-							"that has no valid match in `$this->file`");
+							"that has no valid match in `$this->description`");
 						
 					default:
 						throw new Exception("Tokenize Error: The tokenizer has encountered an invalid token type `<i>$xtoken[type]`
-							after token `<i>$token</i>` in `$this->file`");
+							after token `<i>$token</i>` in `$this->description`");
 				
 				}
 			}
@@ -336,7 +348,7 @@ class Lexer {
 			// Handle '#error' token
 			if($ntoken === '#error') {
 				throw new LexerSyntaxException("Syntax Error: Unexpected <code><b>'$char'</b></code>
-					after `<i>$token</i>` token `$queue` on line $lineNumber at column $colNumber in `$this->file`");
+					after `<i>$token</i>` token `$queue` on line $lineNumber at column $colNumber in `$this->description`");
 			}
 			
 			// Add the current token to the stack and handle queue
